@@ -1,10 +1,9 @@
 import pygame
+import random
 
-# ----------------------------------------
 import utils
 from model.track     import Track
 from model.vehicule  import Vehicule
-# ----------------------------------------
 
 class Scene:
     _track= None
@@ -12,7 +11,7 @@ class Scene:
     _screen = None
     _font = None
     ### ADDED
-    _vehiculeSize = 6
+    _vehiculeRadius = 6
 
     _mouseCoords = (0,0)
 
@@ -35,15 +34,14 @@ class Scene:
         #print(self._track._segmentPointAddLength(s,p,150))
         pygame.draw.circle(self._screen, (128,255,128),self._track._segmentPointAddLength(s,p,150)[1],20,1)
         
-        ### ADDED
-        # draw vehicule size
-        textToShow = "Vehicule's size: {}".format(self._vehiculeSize).encode()
+        ### ADDED to draw the vehicule radius
+        textToShow = "Vehicule's radius: {}".format(self._vehiculeRadius).encode()
         textSurface = self._font.render(textToShow, False, (255,255,255))
-        self._screen.blit(textSurface, (10, utils.__screenSize__[1] -30))
+        self._screen.blit(textSurface, (utils.__screenSize__[0]-120, utils.__screenSize__[1] - utils.__screenSize__[1] + 10))
 
-        textToShow = "Use mouse's wheel to control vehicule's size".encode()
+        textToShow = "Use mouse's wheel to control vehicule's radius".encode()
         textSurface = self._font.render(textToShow, False, (255,255,255))
-        self._screen.blit(textSurface, (10, utils.__screenSize__[1] -15))
+        self._screen.blit(textSurface, (utils.__screenSize__[0]-258, utils.__screenSize__[1] - utils.__screenSize__[1] + 25))
         ###
 
         pygame.display.flip()
@@ -59,12 +57,15 @@ class Scene:
         self.drawMe()
 
     def eventClic(self,coord,b):
-        print("Adding Vehicule at ({},{}) of size {} radius".format(coord[0],coord[1], self._vehiculeSize))
-        self._vehicules.append(Vehicule((coord[0],coord[1]), radius=self._vehiculeSize))
+        ### ADDED to generate random speed and force
+        vehiculeSpeed = (random.randrange(2,20),random.randrange(2,20))
+        vehiculeForce = (random.randrange(0,10),random.randrange(0,10))
+        print("Adding Vehicule at ({},{}) of radius {} radius with a speed of {} and has a {} force".format(coord[0],coord[1], self._vehiculeRadius, vehiculeSpeed, vehiculeForce))
+        self._vehicules.append(Vehicule((coord[0],coord[1]), radius=self._vehiculeRadius, speed=vehiculeSpeed, force=vehiculeForce))
     def recordMouseMove(self, coord):
         self._mouseCoords = coord
     ### ADDED
     def recordVehiculeSize(self, update):
-        if self._vehiculeSize + update >= Vehicule._minradius and self._vehiculeSize + update <= Vehicule._maxradius:
-            self._vehiculeSize += update
+        if self._vehiculeRadius + update >= Vehicule._minradius and self._vehiculeRadius + update <= Vehicule._maxradius:
+            self._vehiculeRadius += update
         

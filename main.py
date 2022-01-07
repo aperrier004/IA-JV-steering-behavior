@@ -1,15 +1,9 @@
-# Objectifs :
-# faire bouger le chemin en temps réel + circuit plus gros
-# Faire des véhicules de taille, force et vitesse différentes #OK
-# Résolution de conflits : ajouter des dommages aux véhicules qui se touchent
-
+### AUTHOR : Alban PERRIER - Bordeaux INP 2022
 import sys, math
 import pygame
 import pygame.draw
 
-# ----------------------------------
 from model.scene    import Scene
-# ----------------------------------
 
 MOUSE_LEFT         = 1
 MOUSE_MIDDLE       = 2

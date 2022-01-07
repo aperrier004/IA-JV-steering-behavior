@@ -2,9 +2,7 @@ import pygame
 import math
 import random
 
-# ------------------------
 import utils
-# -----------------------
 
 class Vehicule:
     _coords = (0,0)   # vector
@@ -18,13 +16,16 @@ class Vehicule:
     _seeInFuture = 3
 
     ### ADDED
+    _hp = 100
+
+    ### ADDED
     def _calculateMaxSpeed(self):
         return math.ceil(self._speedLimit[1] + (self._speedLimit[1] - self._speedLimit[0]) / (self._maxradius - self._minradius) * (self._minradius - self._radius))
 
     def __init__(self, coords=(0,0), speed=(1,1), force =(1,1), **kargs):
         self._coords = coords
         self._force = force
-        self._radius = kargs.get("radius", 6) ### TODO
+        self._radius = kargs.get("radius", 6)
         self._speed = speed
         self._color = (255, random.randint(0,255), random.randint(10,200))
         self._colorfg = tuple([int(c/2) for c in self._color])
@@ -59,7 +60,7 @@ class Vehicule:
     
     @staticmethod
     def handleCollisions(vehicules):
-        " Simple collision checking. Not a very good one, but may do the job for simple simulations"
+        " Simple collision checking. Vehicules get damaged"
         for i,v1 in enumerate(vehicules):
             for v2 in vehicules[i+1:]:
                 offset = utils.vecDiff(v2._coords, v1._coords)
@@ -67,6 +68,15 @@ class Vehicule:
                 if al != 0 and al < v1._radius + v2._radius - 1: # collision
                         v1._coords=(int(v1._coords[0]+offset[0]/al*(v1._radius+v2._radius)),
                                     int(v2._coords[1]+offset[1]/al*(v1._radius+v2._radius)))
+                        ### ADDED to create damages to the vehicules
+                        print("V1 hp's : {} | V2 hp's : {}".format(v1._hp, v2._hp))
+                        v1._hp = v1._hp - round(abs(v2._force[0]))
+                        v2._hp = v2._hp - round(abs(v1._force[0]))
+
+        for i,v1 in enumerate(vehicules):
+            if v1._hp <= 0:
+                print("A vehicule has been deleted")
+                vehicules.remove(v1)
     
     @staticmethod
     def updatePositions(vehicules):

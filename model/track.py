@@ -1,8 +1,6 @@
 import pygame
-
-# ------------------------------
+import random
 import utils
-# -----------------------------
 
 class Track:
     _circuit = None
@@ -64,6 +62,13 @@ class Track:
         return utils.vecAdd(p0,utils.vecScalarMult(self._cachedNormals[numSegment], projection))
 
     def drawMe(self, scene = None):
+        ### ADDED make the circuit moves
+        if random.randint(0,20) == 10:
+            randomTrack = random.randint(0,len(utils.__circuit__)-1)
+            randomX = random.randint(-5,5)
+            randomY = random.randint(-5,5)
+            #print(self._circuit[intRandom][0])
+            self._circuit[randomTrack] = (self._circuit[randomTrack][0] + randomX, self._circuit[randomTrack][1] + randomY)
 
         for p in self._circuit: # Draw simple inner joins
             pygame.draw.circle(self._screen,self._cback,p,int(self._width/2),0)
@@ -72,7 +77,3 @@ class Track:
 
         for i,p in enumerate(self._circuit):
             pygame.draw.line(self._screen, (0,0,250), p, utils.vecAdd(p,utils.vecScalarMult(self._cachedNormals[i], 50)))
-
-        # if scene is not None:
-        #     for i,p in enumerate(self._circuit):
-        #         scene.drawText(str(int(self._cachedLength[i])), p)
