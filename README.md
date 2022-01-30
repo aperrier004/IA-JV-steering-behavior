@@ -12,5 +12,5 @@ Project : AI for video games : ENSC (AI) - Bordeaux INP 2022
 - Run `python main.py`
 
 ## The project
-A brief explanation of the choices I've made and the different steps I've been throught during this project are detailled in the TP_Steering_behavior_PERRIER.pdf file in french.
+A brief explanation of the choices I've made and the different steps I've been throught during this project are detailled in the [`TP_Steering_behavior_PERRIER.pdf`](TP_Steering_behavior_PERRIER.pdf) file in french.
 
